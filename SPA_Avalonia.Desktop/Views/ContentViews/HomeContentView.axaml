@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SPA_Avalonia.Desktop.ViewModels.ContentViewModels"
+             x:DataType="vm:HomeContentViewModel"
+             x:Class="SPA_Avalonia.Desktop.Views.ContentViews.HomeContentView">
+    <UserControl.DataContext>
+        <vm:HomeContentViewModel/>
+    </UserControl.DataContext>
+    
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding Title}"/>
+        <TextBlock Text="{Binding Content}"
+                   TextWrapping="WrapWithOverflow"/>
+    </StackPanel>
+</UserControl>

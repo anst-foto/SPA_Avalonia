@@ -1,0 +1,63 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SPA_Avalonia.Desktop.ViewModels"
+        
+        x:Class="SPA_Avalonia.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SPA_Avalonia.Desktop">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <DockPanel LastChildFill="True">
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Top">
+            <Button Content="&lt;-"
+                    Command="{Binding GoBackCommand}"/>
+        </StackPanel>
+        
+        <SplitView DisplayMode="CompactInline"
+                   CompactPaneLength="36"
+                   OpenPaneLength="200"
+                   PanePlacement="Left">
+            <SplitView.Pane>
+                <Grid RowDefinitions="Auto, *">
+                    <ToggleButton Grid.Row="0"
+                                  IsChecked="{Binding $parent[SplitView].IsPaneOpen}">
+                        <Panel>
+                            <TextBlock Text="Развернуть">
+                                <TextBlock.IsVisible>
+                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type ToggleButton}}"
+                                             Path="!IsChecked"/>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBlock Text="Свернуть"
+                                       IsVisible="{Binding 
+                                                    RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}},
+                                                    Path=IsChecked}"/>
+                        </Panel>
+                    </ToggleButton>
+                    
+                    <ListBox Grid.Row="1"
+                             ItemsSource="{Binding ContentItems}"
+                             SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type vm:ContentItem}">
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </SplitView.Pane>
+            
+            <SplitView.Content>
+                <TransitioningContentControl Content="{Binding CurrentContentViewModel,
+                                                        Mode=TwoWay,
+                                                        UpdateSourceTrigger=PropertyChanged}" />
+            </SplitView.Content>
+        </SplitView>
+    </DockPanel>
+</Window>
